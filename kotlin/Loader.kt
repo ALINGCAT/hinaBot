@@ -34,7 +34,7 @@ fun Bot.messageDSL() {
             if (game.isFirstSignIn(sender.id)) reply(At(sender as Member) + " 签到成功!\n您是第一次签到,获得50枚硬币")
             else if (game.isAlreadySignIn(sender.id)) reply(At(sender as Member) + " 您今天已经签到过啦!")
             else {
-                val lot = game.getLot(sender.id)
+                val lot = game.getLot(sender.id, true)!!
                 reply(At(sender as Member) + " 签到成功!\n您今日抽到的是 ${lot.get("lot")}\n" +
                         "本次签到您获得了${lot.get("increment")}" + "枚硬币\n" +
                         "您总计签到${lot.get("accumulation")}次,额外获得${lot.get("accumulation")}枚硬币\n" +
@@ -46,14 +46,26 @@ fun Bot.messageDSL() {
             game.initData()
             reply(At(sender as Member) + " 数据已初始化!")
         }
-        "帮助" reply "目前已添加的功能:\n签到 每天可以签到一次并抽签\n查看库存 看看自己的仓库都有啥\n#单抽 可以抽取一次\n#十连抽 可以连续抽取十次\n(注意每次抽奖需要消耗50硬币)"
-        case("#单抽") {
+        "帮助" reply "目前已添加的功能:\n" +
+                "签到 每天可以签到一次并抽签\n" +
+                "抽签 消耗10硬币进行一次抽签\n" +
+                "查看库存 看看自己的仓库都有啥\n" +
+                "#查看<物品名字> 查看某个物品的描述\n"
+                "单抽 可以抽取一次\n" +
+                "十连抽 可以连续抽取十次\n" +
+                "(注意每次抽奖需要消耗50硬币)"
+        case("抽签") {
+            val lot = game.getLot(sender.id)
+            if (lot == null) reply(At(sender as Member) + " 硬币不够哦!\n单独抽签需要10枚硬币!")
+            else reply(At(sender as Member) + " 抽签成功!\n您抽到的是 ${lot.get("lot")}\n获得了${lot.get("increment")}枚硬币")
+        }
+        case("单抽") {
             val item = game.draw(sender.id)
             if (item == null) reply(At(sender as Member) + " 您的硬币不够哦!")
             else reply(At(sender as Member) + " 抽奖成功! 消耗50硬币\n本次单抽获得: [${item.rarity}]${item.name}x1")
             JDBC.close()
         }
-        case("#十连抽") {
+        case("十连抽") {
             val items = game.drawTenTimes(sender.id)
             if (items == null) reply(At(sender as Member) + "您的硬币不够哦! 一共需要500硬币")
             else {

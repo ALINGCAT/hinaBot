@@ -27,7 +27,11 @@ class GameMain {
         val now = LocalDateTime.now()
         return temp.dayOfYear == now.dayOfYear && temp.year == now.year
     }
-    fun getLot(qq:Long): HashMap<String, String> {
+    fun getLot(qq: Long, isSignIn: Boolean = false): HashMap<String, String>? {
+        if (!isSignIn) {
+            if (Player.instances[qq]!!.coins < 10) return null
+            else Player.instances[qq]!!.addCoins(-10)
+        }
         var lot = "最下签"
         var increment = 0
         when ((1..100).random()) {
@@ -38,10 +42,8 @@ class GameMain {
             in 61..80 -> { lot = "小凶"; increment = (3..5).random() }
             in 81..99 -> { lot = "大凶"; increment = (1..2).random() }
         }
-        Player.instances[qq]!!.updateLastSignIn()
-        Player.instances[qq]!!.addCoins(increment + Player.instances[qq]!!.accumulation)
-        EssDao.setCoins(qq, Player.instances[qq]!!.coins)
-        EssDao.updateLastSignIn(qq, Player.instances[qq]!!.accumulation)
+        if (isSignIn) Player.instances[qq]!!.updateSignIn(increment)
+        else Player.instances[qq]!!.addCoins(increment)
         val result = HashMap<String, String>()
         result.put("lot", lot)
         result.put("increment", increment.toString())
