@@ -1,6 +1,6 @@
-package DAO
+package dao
 
-import Core.Player
+import core.Player
 import java.time.LocalDateTime
 
 class EssDao : JDBC() {

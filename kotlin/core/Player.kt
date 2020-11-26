@@ -1,7 +1,7 @@
-package Core
+package core
 
-import DAO.EssDao
-import DAO.InventoryDao
+import dao.EssDao
+import dao.InventoryDao
 import java.time.LocalDateTime
 
 class Player(QQ: Long, Coins: Int, LastSignIn: LocalDateTime, Accumulation: Int) {

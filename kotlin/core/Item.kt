@@ -1,4 +1,4 @@
-package Core
+package core
 
 class Item(item_id: Int, item_rarity: String, item_name: String, item_description: String, drawable: Boolean,func: () -> Unit) {
     companion object{

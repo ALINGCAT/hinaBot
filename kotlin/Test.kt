@@ -1,4 +1,4 @@
-import Core.Item
+import core.Item
 
 fun main() {
     Item.init()
