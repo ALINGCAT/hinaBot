@@ -10,12 +10,12 @@ class EssDao : JDBC() {
             val rs = stmt.executeQuery("select * from qq")
             val players = HashMap<Long, Player>()
             while (rs.next()) {
-                players.put(rs.getLong("id"), Player(
+                players[rs.getLong("id")] = Player(
                         rs.getLong("id"),
                         rs.getInt("coins"),
                         rs.getTimestamp("lastsignin").toLocalDateTime(),
                         rs.getInt("accumulation")
-                ))
+                )
             }
             return players
         }

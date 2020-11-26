@@ -12,7 +12,7 @@ class Player(QQ: Long, Coins: Int, LastSignIn: LocalDateTime, Accumulation: Int)
             for (e in instances) e.value.initInventory()
         }
     }
-    val qq: Long = QQ
+    private val qq: Long = QQ
     var coins = Coins
     var lastSignIn = LastSignIn
     var accumulation = Accumulation

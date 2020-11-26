@@ -54,17 +54,16 @@ class GameMain {
         fun draw(qq: Long): Item? {
             if (Player.instances[qq]?.coins ?: 0 < 50) return null
             Player.instances[qq]!!.addCoins(-50)
-            var result: Item
-            when((1..100).random()) {
-                1 -> result = Draw.pool["SS"]?.random()!!
-                in 2..7 -> result = Draw.pool["S"]?.random()!!
-                in 8..20 -> result = Draw.pool["A"]?.random()!!
-                in 21..50 -> result = Draw.pool["B"]?.random()!!
-                else -> result = Draw.pool["C"]?.random()!!
+            val result: Item = when((1..100).random()) {
+                1 -> Draw.pool["SS"]?.random()!!
+                in 2..7 -> Draw.pool["S"]?.random()!!
+                in 8..20 -> Draw.pool["A"]?.random()!!
+                in 21..50 -> Draw.pool["B"]?.random()!!
+                else -> Draw.pool["C"]?.random()!!
             }
             if (Player.instances[qq]!!.inventory[result] == null) {
                 InventoryDao.firstGainItem(qq, result)
-                Player.instances[qq]!!.inventory.put(result, 1)
+                Player.instances[qq]!!.inventory[result] = 1
             } else {
                 val temp = Player.instances[qq]!!.inventory[result]!! + 1
                 InventoryDao.setAmount(qq, result, temp)
@@ -77,13 +76,12 @@ class GameMain {
             Player.instances[qq]!!.addCoins(-500)
             val result = HashMap<Item, Int>()
             for (i in (1..10)) {
-                var temp: Item
-                when((1..100).random()) {
-                    1 -> temp = Draw.pool["SS"]?.random()!!
-                    in 2..7 -> temp = Draw.pool["S"]?.random()!!
-                    in 8..20 -> temp = Draw.pool["A"]?.random()!!
-                    in 21..50 -> temp = Draw.pool["B"]?.random()!!
-                    else -> temp = Draw.pool["C"]?.random()!!
+                val temp: Item = when((1..100).random()) {
+                    1 -> Draw.pool["SS"]?.random()!!
+                    in 2..7 -> Draw.pool["S"]?.random()!!
+                    in 8..20 -> Draw.pool["A"]?.random()!!
+                    in 21..50 -> Draw.pool["B"]?.random()!!
+                    else -> Draw.pool["C"]?.random()!!
                 }
                 if (result[temp] == null) result[temp] = 1
                 else result[temp]?.plus(1)?.let { result.replace(temp, it) }
@@ -91,7 +89,7 @@ class GameMain {
             for (e in result) {
                 if (Player.instances[qq]!!.inventory[e.key] == null) {
                     InventoryDao.firstGainItem(qq, e.key, e.value)
-                    Player.instances[qq]!!.inventory.put(e.key, e.value)
+                    Player.instances[qq]!!.inventory[e.key] = e.value
                 }
                 else {
                     val temp = Player.instances[qq]!!.inventory[e.key]!! + e.value

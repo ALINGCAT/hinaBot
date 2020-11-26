@@ -1,8 +1,6 @@
 package core
 
 import dao.JDBC
-import net.mamoe.mirai.contact.Member
-import net.mamoe.mirai.message.data.At
 
 class TextManager {
     companion object {
@@ -42,11 +40,11 @@ class TextManager {
         fun drawTenTimes(qq: Long): String {
             val items = GameMain.drawTenTimes(qq)
             JDBC.close()
-            if (items == null) return "您的硬币不够哦! 一共需要500硬币"
+            return if (items == null) "您的硬币不够哦! 一共需要500硬币"
             else {
                 var str = ""
                 for (e in items) str += "[${e.key.rarity}]${e.key.name}x${e.value} "
-                return " 抽奖成功! 消耗500硬币\n本次十连抽获得: $str"
+                " 抽奖成功! 消耗500硬币\n本次十连抽获得: $str"
             }
         }
         fun getItemInfo(name: String): String {
@@ -54,13 +52,13 @@ class TextManager {
             else "${Item.instances[name]!!.name}: ${Item.instances[name]!!.description}"
         }
         fun getInventory(qq: Long): String {
-            if (Player.instances[qq] == null) return " 未检测到您的记录,签到可注册游戏!"
+            return if (Player.instances[qq] == null) " 未检测到您的记录,签到可注册游戏!"
             else {
                 var str = " 目前拥有${Player.instances[qq]!!.coins}枚硬币 以及..\n"
                 val items = Player.instances[qq]!!.inventory
                 if (items.isEmpty()) str += "暂时还没有其他物品哦!"
                 else for (e in items) str += "[${e.key.rarity}]${e.key.name}x${e.value} "
-                return str
+                str
             }
         }
     }

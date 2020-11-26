@@ -7,19 +7,19 @@ import java.sql.Statement
 
 open class JDBC {
     companion object {
-        val config = ConfigKit.getConfig("config.txt")
-        var conn:Connection = DriverManager.getConnection(
-                config.get("databasePath"),
-                config.get("databaseUser"),
-                config.get("databasePassword")
+        private val config = ConfigKit.getConfig("config.txt")
+        private var conn:Connection = DriverManager.getConnection(
+                config["databasePath"],
+                config["databaseUser"],
+                config["databasePassword"]
         )
         var stmt:Statement = conn.createStatement()
         fun init() {
             if (conn.isClosed) {
                 conn = DriverManager.getConnection(
-                        config.get("databasePath"),
-                        config.get("databaseUser"),
-                        config.get("databasePassword")
+                        config["databasePath"],
+                        config["databaseUser"],
+                        config["databasePassword"]
                 )
                 stmt = conn.createStatement()
             }

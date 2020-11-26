@@ -4,10 +4,10 @@ class Item(item_id: Int, item_rarity: String, item_name: String, item_descriptio
     companion object{
         val instances = HashMap<String, Item>()
         val table = HashMap<Int, String>()
-        fun addItem(item_id: Int, item_rarity: String, item_name: String, item_description: String, drawable: Boolean,func: () -> Unit) {
-            var temp = Item(item_id, item_rarity, item_name, item_description, drawable, func)
-            table.put(temp.id, temp.name)
-            instances.put(temp.name, temp)
+        private fun addItem(item_id: Int, item_rarity: String, item_name: String, item_description: String, drawable: Boolean, func: () -> Unit) {
+            val temp = Item(item_id, item_rarity, item_name, item_description, drawable, func)
+            table[temp.id] = temp.name
+            instances[temp.name] = temp
         }
         fun init() {
             addItem(1, "C", "牛乳", "营养全面的乳饮品,使用能回复从者的体力", true) {

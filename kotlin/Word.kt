@@ -1,10 +1,9 @@
-import java.util.*
 import kotlin.collections.ArrayList
 
 class Word internal constructor(var word: String, var translate: String, var link: String) {
 
     companion object {
-        val instances = setOf<Word>(
+        private val instances = setOf(
                 Word("seism,seimo", "seism地震", "http://etymon.cn/yingyucigen/3093.html"),
                 Word("radi-,-ray-,-radio-", "ray,beam光线", "http://etymon.cn/yingyucigen/1082.html"),
                 Word("ac,acr,acid", "sour酸的sharp锐利的", "http://etymon.cn/yingyucigen/1121.html"),
@@ -779,7 +778,7 @@ class Word internal constructor(var word: String, var translate: String, var lin
             val result = ArrayList<Word>()
             val temp = instances.shuffled()
             for (i in (0 until count))
-                result.add(temp.get(i))
+                result.add(temp[i])
             return result
         }
     }

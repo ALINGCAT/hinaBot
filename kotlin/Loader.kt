@@ -1,8 +1,5 @@
 import core.GameMain
-import core.Item
-import core.Player
 import core.TextManager
-import dao.JDBC
 import net.mamoe.mirai.Bot
 import net.mamoe.mirai.alsoLogin
 import net.mamoe.mirai.contact.Member
@@ -48,7 +45,7 @@ fun Bot.messageDSL() {
             reply(str)
         }
         startsWith("查词根") {
-            var temp = Word.findByWord(it)
+            val temp = Word.findByWord(it)
             when (temp.size) {
                 0 -> reply(At(sender as Member) + "没能找到该词根")
                 in 1..15 -> {
@@ -62,7 +59,7 @@ fun Bot.messageDSL() {
             }
         }
         startsWith("查释义") {
-            var temp = Word.findByTranslate(it)
+            val temp = Word.findByTranslate(it)
             when (temp.size) {
                 0 -> reply(At(sender as Member) + "没能找到该释义")
                 in 1..15 -> {

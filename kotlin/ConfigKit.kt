@@ -6,7 +6,7 @@ class ConfigKit {
             val table = HashMap<String,String>()
             File(path.toString()).forEachLine {
                 val temp = it.split('=')
-                table.put(temp.get(0),temp.get(1))
+                table[temp[0]] = temp[1]
             }
             return table
         }

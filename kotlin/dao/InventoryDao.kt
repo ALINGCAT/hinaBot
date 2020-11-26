@@ -8,7 +8,7 @@ class InventoryDao : JDBC() {
             init()
             val rs = stmt.executeQuery("select * from inventory where owner = $qq")
             val temp = HashMap<Int, Int>()
-            while (rs.next()) temp.put(rs.getInt("item_id"), rs.getInt("amount"))
+            while (rs.next()) temp[rs.getInt("item_id")] = rs.getInt("amount")
             return temp
         }
         fun setAmount(qq: Long, item: Item, amount: Int) {
