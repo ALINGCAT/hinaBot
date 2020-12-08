@@ -1,6 +1,6 @@
 package dao
 
-import core.Item
+import core.item.Item
 
 class InventoryDao : JDBC() {
     companion object {

@@ -2,10 +2,13 @@ import core.GameMain
 import core.TextManager
 import net.mamoe.mirai.Bot
 import net.mamoe.mirai.alsoLogin
+import net.mamoe.mirai.contact.Group
 import net.mamoe.mirai.contact.Member
 import net.mamoe.mirai.event.subscribeMessages
 import net.mamoe.mirai.join
 import net.mamoe.mirai.message.data.At
+import tools.ConfigKit
+import kotlin.system.exitProcess
 
 @Suppress("UNUSED_VARIABLE")
 suspend fun main() {
@@ -27,14 +30,42 @@ fun Bot.messageDSL() {
     GameMain.init()
     this.subscribeMessages {
         "阳菜" reply "在的说!"
-        "帮助" reply TextManager.help
-        "签到" reply { At(sender as Member) + TextManager.signIn(sender.id) }
-        "抽签" reply{ At(sender as Member) + TextManager.getLot(sender.id) }
-        "单抽" reply { At(sender as Member) + TextManager.draw(sender.id) }
-        "十连抽" reply { At(sender as Member) + TextManager.drawTenTimes(sender.id) }
-        "查看库存" reply { At(sender as Member) + TextManager.getInventory(sender.id) }
-        "!初始化数据" reply { At(sender as Member) + TextManager.initDate() }
-        startsWith("#查看") { reply(At(sender as Member) + TextManager.getItemInfo(it)) }
+        case("!杀掉阳菜") {
+            if(sender.id == 2218773842) {
+                reply("阳菜死了")
+                exitProcess(0)
+            }
+        }
+
+        //猫猫系列
+        "公告" reply "在写了 在写了"
+        "关于" reply "目前版本:alpha v0.3.2\n项目的开源页面:https://github.com/ALINGCAT/hinabot"
+        "帮助" reply TextManager.HELP
+        "!初始化数据" reply TextManager.initDate()
+        case("签到") {
+            if (subject is Group) reply(At(sender as Member) + TextManager.signIn(sender.id))
+            else reply(TextManager.signIn(sender.id))
+        }
+        case("#抽奖") {
+            if (subject is Group) reply(At(sender as Member) + TextManager.draw(sender.id))
+            else reply(TextManager.draw(sender.id))
+        }
+        case("查看库存") {
+            if (subject is Group) reply(At(sender as Member) + TextManager.getInventory(sender.id))
+            else reply(TextManager.getInventory(sender.id))
+        }
+        startsWith("#查看") {
+            if (subject is Group) reply(At(sender as Member) + TextManager.getItemInfo(it))
+            else reply(TextManager.getItemInfo(it))
+        }
+        startsWith("#查询") {
+            if (subject is Group) reply(At(sender as Member) + TextManager.getInfo(it))
+            else reply(TextManager.getInfo(it))
+        }
+        startsWith("#抽奖") {
+            if (subject is Group) reply(At(sender as Member) + TextManager.draw(sender.id, it))
+            else reply(TextManager.draw(sender.id, it))
+        }
 
         //查单词词根系列
         "随机词根" {

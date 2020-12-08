@@ -13,8 +13,7 @@ class EssDao : JDBC() {
                 players[rs.getLong("id")] = Player(
                         rs.getLong("id"),
                         rs.getInt("coins"),
-                        rs.getTimestamp("lastsignin").toLocalDateTime(),
-                        rs.getInt("accumulation")
+                        rs.getTimestamp("lastsignin").toLocalDateTime()
                 )
             }
             return players
@@ -23,10 +22,10 @@ class EssDao : JDBC() {
             init()
             stmt.execute("insert into qq(id, coins) values('$qq', '50')")
         }
-        fun updateLastSignIn(qq:Long, signInAccumulation:Int) {
+        fun updateLastSignIn(qq:Long) {
             val now = LocalDateTime.now()
             init()
-            stmt.execute("update qq set lastsignin = '$now', accumulation = '$signInAccumulation' where id = $qq")
+            stmt.execute("update qq set lastsignin = '$now' where id = $qq")
         }
         fun setCoins(qq:Long, coins:Int) {
             init()
